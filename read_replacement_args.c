@@ -34,9 +34,11 @@ Dict_t readDict(int argc, char *argv[], DictEntry_t *entries) {
 }
 
 const char * dictFind(Dict_t dict, const char * key) {
+  char keyWithColon[strlen(key)+sizeof(char)];
+  strcpy(keyWithColon, key);
+  strcat(keyWithColon, ":");
   for(size_t i=0; i < dict.count; i++) {
-    printf("Comparing %s == %s\n", dict.entries[i].key, key);
-    if (strcmp(dict.entries[i].key, key) == 0) {
+    if (strcmp(dict.entries[i].key, keyWithColon) == 0) {
       return dict.entries[i].value;
     }
   }

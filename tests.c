@@ -53,8 +53,8 @@ void testDictFind() {
   Dict_t dict = readDict(argc, argv, entries);
 
   assert(strcmp(dictFind(dict, "madeup"), DICT_NO_KEY) == 0);
-  assert(strcmp(dictFind(dict, "one:"), "number1") == 0);
-  assert(strcmp(dictFind(dict, "two:"), "number2") == 0);
+  assert(strcmp(dictFind(dict, "one"), "number1") == 0);
+  assert(strcmp(dictFind(dict, "two"), "number2") == 0);
 }
 
 int main(int argc, char *argv[]) {
