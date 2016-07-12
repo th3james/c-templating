@@ -15,11 +15,13 @@ void testReadDictOneEntry() {
   int argc = 2;
   char *argv[] = {"hat:", "boat"};
 
-  DictEntry_t result[calculateDictEntryCount(argc)];
-  readDict(argc, argv, result);
+  DictEntry_t entries[calculateDictEntryCount(argc)];
+  Dict_t result = readDict(argc, argv, entries);
 
-  assert(strcmp(result[0].key, "hat:") == 0);
-  assert(strcmp(result[0].value, "boat") == 0);
+  assert(result.count == 1);
+
+  assert(strcmp(result.entries[0].key, "hat:") == 0);
+  assert(strcmp(result.entries[0].value, "boat") == 0);
 }
 
 void testReadDictTwoEntries() {
@@ -29,17 +31,35 @@ void testReadDictTwoEntries() {
     "two:", "two"
   };
 
-  DictEntry_t result[calculateDictEntryCount(argc)];
-  readDict(argc, argv, result);
+  DictEntry_t entries[calculateDictEntryCount(argc)];
+  Dict_t result = readDict(argc, argv, entries);
 
-  assert(strcmp(result[0].key, "one:") == 0);
-  assert(strcmp(result[0].value, "one") == 0);
-  assert(strcmp(result[1].key, "two:") == 0);
-  assert(strcmp(result[1].value, "two") == 0);
+  assert(result.count == 2);
+
+  assert(strcmp(result.entries[0].key, "one:") == 0);
+  assert(strcmp(result.entries[0].value, "one") == 0);
+  assert(strcmp(result.entries[1].key, "two:") == 0);
+  assert(strcmp(result.entries[1].value, "two") == 0);
+}
+
+void testDictFind() {
+  int argc = 4;
+  char *argv[] = {
+    "one:", "number1",
+    "two:", "number2"
+  };
+
+  DictEntry_t entries[calculateDictEntryCount(argc)];
+  Dict_t dict = readDict(argc, argv, entries);
+
+  assert(strcmp(dictFind(dict, "madeup"), DICT_NO_KEY) == 0);
+  assert(strcmp(dictFind(dict, "one:"), "number1") == 0);
+  assert(strcmp(dictFind(dict, "two:"), "number2") == 0);
 }
 
 int main(int argc, char *argv[]) {
   testCalculateDictEntryCount();
   testReadDictOneEntry();
   testReadDictTwoEntries();
+  testDictFind();
 }

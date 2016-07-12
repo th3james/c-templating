@@ -7,7 +7,8 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  char **argDict = readDict(argc, argv);
+  DictEntry_t result[calculateDictEntryCount(argc)];
+  readDict(argc, argv, result);
 
   FILE *templateFile;
   if ((templateFile = fopen(argv[1], "r")) == NULL) {
