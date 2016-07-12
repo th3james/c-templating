@@ -7,8 +7,8 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  DictEntry_t result[calculateDictEntryCount(argc)];
-  readDict(argc, argv, result);
+  DictEntry_t entries[calculateDictEntryCount(argc)];
+  Dict_t replacementDict = readDict(argc, argv, entries);
 
   FILE *templateFile;
   if ((templateFile = fopen(argv[1], "r")) == NULL) {
@@ -20,6 +20,8 @@ int main(int argc, char *argv[]) {
       putchar(c);
     }
   }
+
+  printf("Key hat: %s", dictFind(replacementDict, "hat"));
 
   return 0;
 }
