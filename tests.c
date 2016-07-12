@@ -23,8 +23,8 @@ void testReadDictTwoEntries() {
   DictEntry_t *result = readDict(argc, argv);
   assert(strcmp(result[0].key, "one:") == 0);
   assert(strcmp(result[0].value, "one") == 0);
-  assert(strcmp(result[1].key, "one:") == 0);
-  assert(strcmp(result[1].value, "one") == 0);
+  assert(strcmp(result[1].key, "two:") == 0);
+  assert(strcmp(result[1].value, "two") == 0);
   free(result);
 }
 
