@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
+#ifndef READ_RPLC_ARGS
+#define READ_RPLC_ARGS
 #define DICT_NO_KEY "§§DICT_NO_KEY§§"
 
 typedef struct DictEntry_t {
@@ -46,3 +48,4 @@ const char * dictFind(Dict_t dict, const char * key) {
 
   return DICT_NO_KEY;
 }
+#endif
