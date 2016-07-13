@@ -22,6 +22,10 @@ void testCalculateRenderedLength() {
   size_t result = calculateRenderedLength(templateFile);
   // returns correct size
   assert(result == expectedSize);
+  // rewinds the file
+  fpos_t position;
+  fgetpos(templateFile, &position);
+  assert(position == SEEK_SET);
   fclose(templateFile);
 }
 
@@ -33,7 +37,10 @@ void testRenderBasicTemplate() {
   Dict_t dict = readDict(argc, argv, entries);
 
   FILE *templateFile = getTemplateFile();
-  //char result[calculateRenderedLength(templateFile)];
+  char result[calculateRenderedLength(templateFile)];
+  renderTemplate(templateFile, dict, result);
+  printf("Got result '%s'", result);
+  assert(strcmp(result, "Hello World") == 0);
   fclose(templateFile);
 }
 
