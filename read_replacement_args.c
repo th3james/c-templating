@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #define DICT_NO_KEY "§§DICT_NO_KEY§§"
 
 typedef struct DictEntry_t {
