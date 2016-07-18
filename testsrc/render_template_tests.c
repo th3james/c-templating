@@ -30,13 +30,25 @@ void testCalculateRenderedLength() {
 }
 
 void testRenderChar() {
+  ParserState_t state = buildStartState();
   char c;
   c = 'H';
-  assert(renderChar(c) == 'H');
+  assert(renderChar(c, &state) == 'H');
+  assert(state.inCount == 0);
   
   // Opening delimiter
-  c = '{';
-  assert(renderChar(c) == '\0');
+  c = OPEN_DELIMITER;
+  assert(renderChar(c, &state) == '\0');
+  assert(state.inCount == 1);
+  assert(renderChar(c, &state) == '\0');
+  assert(state.inCount == 2);
+
+  // Closing delimiter
+  c = CLOSING_DELIMITER;
+  assert(renderChar(c, &state) == '\0');
+  assert(state.inCount == 1);
+  assert(renderChar(c, &state) == '\0');
+  assert(state.inCount == 0);
 }
 
 void testRenderBasicTemplate() {
