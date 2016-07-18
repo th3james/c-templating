@@ -29,6 +29,16 @@ void testCalculateRenderedLength() {
   fclose(templateFile);
 }
 
+void testRenderChar() {
+  char c;
+  c = 'H';
+  assert(renderChar(c) == 'H');
+  
+  // Opening delimiter
+  c = '{';
+  assert(renderChar(c) == '\0');
+}
+
 void testRenderBasicTemplate() {
   int argc = 2;
   char *argv[] = {"name:", "World"};
@@ -46,5 +56,6 @@ void testRenderBasicTemplate() {
 
 void testSuiteRenderTemplate() {
   testCalculateRenderedLength();
+  testRenderChar();
   testRenderBasicTemplate();
 }
