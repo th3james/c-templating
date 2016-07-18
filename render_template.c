@@ -1,3 +1,4 @@
+#include <stdio.h>
 #ifndef RENDER_TEMPLATE
 #define RENDER_TEMPLATE
 size_t calculateRenderedLength(FILE *templateFp) {
@@ -8,6 +9,13 @@ size_t calculateRenderedLength(FILE *templateFp) {
 }
 
 void renderTemplate(FILE *templateFp, Dict_t replacements, char *result) {
-  result[0] = 'H';
+  size_t fileLength = 10;
+  size_t p=0;
+  char c;
+  while((c=fgetc(templateFp)) != EOF) {
+    result[p] = c;
+    p++;
+  }
+  result[++p] = '\0';
 }
 #endif
