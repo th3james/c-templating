@@ -5,6 +5,7 @@
 #define OPEN_DELIMITER '{'
 #define CLOSING_DELIMITER '}'
 #define DELIMITER_COUNT 2
+#define MAX_REPLACEMENT_LENGTH 40
 
 size_t calculateRenderedLength(FILE *templateFp) {
   fseek(templateFp, 0, SEEK_END);
@@ -15,18 +16,24 @@ size_t calculateRenderedLength(FILE *templateFp) {
 
 typedef struct ParserState_t {
   int8_t inCount;
+  char *replacementKey;
 } ParserState_t;
 
 ParserState_t buildStartState() {
   ParserState_t state;
   state.inCount = 0;
+  state.replacementKey = calloc(sizeof(char), MAX_REPLACEMENT_LENGTH);
   return state;
+}
+
+void deleteState(ParserState_t state) {
+  free(state.replacementKey);
 }
 
 char renderChar(char c, ParserState_t *state) {
   if (c == '{') {
     state->inCount++;
-    return '\0'
+    return '\0';
   } else if (c == '}') {
     state->inCount--;
     return '\0';
@@ -34,6 +41,9 @@ char renderChar(char c, ParserState_t *state) {
 
   if (state->inCount == 0) {
     return c;
+  } else {
+    assert(-1); // shouldn't happen
+    return '\0';
   }
 }
 

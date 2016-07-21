@@ -17,7 +17,7 @@ FILE *getTemplateFile() {
 void testCalculateRenderedLength() {
   FILE *templateFile = getTemplateFile();
   // it returns 3X the file length
-  static const size_t templateFileSize = 15;
+  static const size_t templateFileSize = 16;
   static const size_t expectedSize = templateFileSize*3;
   size_t result = calculateRenderedLength(templateFile);
   // returns correct size
@@ -29,7 +29,13 @@ void testCalculateRenderedLength() {
   fclose(templateFile);
 }
 
-void testRenderChar() {
+void testBuildStartState() {
+  ParserState_t state = buildStartState();
+  assert(strcmp(state.replacementKey, "") == 0);
+  deleteState(state);
+}
+
+void testRenderCharNotParsing() {
   ParserState_t state = buildStartState();
   char c;
   c = 'H';
@@ -51,6 +57,22 @@ void testRenderChar() {
   assert(state.inCount == 0);
 }
 
+void testRenderCharParsing() {
+  ParserState_t state = buildStartState();
+  char c;
+
+  // inCount == DELIMITER_COUNT, space
+  c = ' ';
+  state.inCount = DELIMITER_COUNT;
+  assert(renderChar(c, &state) == '\0');
+
+  // inCount == DELIMITER_COUNT, character
+  c = 'n';
+  state.inCount = DELIMITER_COUNT;
+  assert(renderChar(c, &state) == '\0');
+  assert(state.inCount == DELIMITER_COUNT);
+}
+
 void testRenderBasicTemplate() {
   int argc = 2;
   char *argv[] = {"name:", "World"};
@@ -62,12 +84,14 @@ void testRenderBasicTemplate() {
   char result[calculateRenderedLength(templateFile)];
   renderTemplate(templateFile, dict, result);
   printf("Got result '%s'", result);
-  assert(strcmp(result, "Hello World") == 0);
+  assert(strcmp(result, "Hello World!") == 0);
   fclose(templateFile);
 }
 
 void testSuiteRenderTemplate() {
   testCalculateRenderedLength();
-  testRenderChar();
+  testBuildStartState();
+  testRenderCharNotParsing();
+  testRenderCharParsing();
   testRenderBasicTemplate();
 }

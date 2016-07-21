@@ -4,4 +4,5 @@
 int main(int argc, char *argv[]) {
   testSuiteReplacementArgs();
   testSuiteRenderTemplate();
+  return 0;
 }
