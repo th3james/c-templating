@@ -30,6 +30,14 @@ void deleteState(ParserState_t *state) {
   free(state->replacementKey);
 }
 
+int8_t shouldRenderReplacement(ParserState_t *state) {
+  if (state->inCount == 0 && *state->replacementKey != '\0') {
+    return 1;
+  } else {
+    return 0;
+  };
+}
+
 char renderChar(char c, ParserState_t *state) {
   if (c == '{') {
     state->inCount++;
@@ -62,6 +70,8 @@ void renderTemplate(FILE *templateFp, Dict_t replacements, char *result) {
     if ((c = renderChar(c, &state)) != '\0') {
       result[p] = c;
       p++;
+    }
+    if (shouldRenderReplacement(&state)) {
     }
   }
   deleteState(&state);

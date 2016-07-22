@@ -81,6 +81,34 @@ void testRenderCharParsing() {
   assert(renderChar(c, &state) == '\0');
   assert(state.inCount == DELIMITER_COUNT);
   assert(strcmp(state.replacementKey, "ne") == 0);
+
+  // inCount == DELIMITER_COUNT, space, pre-existing replacementKey
+  c = ' ';
+  state.inCount = DELIMITER_COUNT;
+  assert(renderChar(c, &state) == '\0');
+  assert(state.inCount == DELIMITER_COUNT);
+  assert(strcmp(state.replacementKey, "ne") == 0);
+
+  deleteState(&state);
+}
+
+void testShouldRenderReplacement() {
+  ParserState_t state = buildStartState();
+
+  // when inCount > 0 => false
+  state.inCount = 1;
+  assert(shouldRenderReplacement(&state) == 0);
+
+  // when inCount == 0 and replacementKey == "" => false
+  state.inCount = 0;
+  state.replacementKey[0] = '\0';
+  assert(shouldRenderReplacement(&state) == 0);
+
+  // when inCount == 0 and replacementKey != "" => true
+  state.inCount = 0;
+  strcpy(state.replacementKey, "hat");
+  assert(shouldRenderReplacement(&state) == 1);
+
   deleteState(&state);
 }
 
@@ -104,5 +132,6 @@ void testSuiteRenderTemplate() {
   testBuildStartState();
   testRenderCharNotParsing();
   testRenderCharParsing();
+  testShouldRenderReplacement();
   testRenderBasicTemplate();
 }
