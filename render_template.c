@@ -26,8 +26,8 @@ ParserState_t buildStartState() {
   return state;
 }
 
-void deleteState(ParserState_t state) {
-  free(state.replacementKey);
+void deleteState(ParserState_t *state) {
+  free(state->replacementKey);
 }
 
 char renderChar(char c, ParserState_t *state) {
@@ -41,6 +41,11 @@ char renderChar(char c, ParserState_t *state) {
 
   if (state->inCount == 0) {
     return c;
+  } else if (state->inCount == DELIMITER_COUNT && c != ' ' ) {
+    int16_t strEnd = 0;
+    while(state->replacementKey[strEnd] != '\0') { strEnd++; }
+    state->replacementKey[strEnd] = c;
+    return '\0';
   } else {
     assert(-1); // shouldn't happen
     return '\0';
@@ -59,6 +64,7 @@ void renderTemplate(FILE *templateFp, Dict_t replacements, char *result) {
       p++;
     }
   }
+  deleteState(&state);
   result[++p] = '\0';
 }
 #endif

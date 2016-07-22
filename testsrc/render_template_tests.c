@@ -32,7 +32,7 @@ void testCalculateRenderedLength() {
 void testBuildStartState() {
   ParserState_t state = buildStartState();
   assert(strcmp(state.replacementKey, "") == 0);
-  deleteState(state);
+  deleteState(&state);
 }
 
 void testRenderCharNotParsing() {
@@ -55,6 +55,7 @@ void testRenderCharNotParsing() {
   assert(state.inCount == 1);
   assert(renderChar(c, &state) == '\0');
   assert(state.inCount == 0);
+  deleteState(&state);
 }
 
 void testRenderCharParsing() {
@@ -65,12 +66,22 @@ void testRenderCharParsing() {
   c = ' ';
   state.inCount = DELIMITER_COUNT;
   assert(renderChar(c, &state) == '\0');
+  assert(strcmp(state.replacementKey, "") == 0);
 
   // inCount == DELIMITER_COUNT, character
   c = 'n';
   state.inCount = DELIMITER_COUNT;
   assert(renderChar(c, &state) == '\0');
   assert(state.inCount == DELIMITER_COUNT);
+  assert(strcmp(state.replacementKey, "n") == 0);
+
+  // inCount == DELIMITER_COUNT, character
+  c = 'e';
+  state.inCount = DELIMITER_COUNT;
+  assert(renderChar(c, &state) == '\0');
+  assert(state.inCount == DELIMITER_COUNT);
+  assert(strcmp(state.replacementKey, "ne") == 0);
+  deleteState(&state);
 }
 
 void testRenderBasicTemplate() {
