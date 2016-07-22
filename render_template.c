@@ -72,6 +72,17 @@ void renderTemplate(FILE *templateFp, Dict_t replacements, char *result) {
       p++;
     }
     if (shouldRenderReplacement(&state)) {
+      const char * replacementValue = dictFind(
+        replacements, state.replacementKey
+      );
+      size_t keyPos = 0;
+      char repC;
+      while((repC = replacementValue[keyPos]) != '\0') {
+        result[p] = repC;
+        p++;
+        keyPos++;
+      }
+      state.replacementKey[0] = '\0';
     }
   }
   deleteState(&state);
