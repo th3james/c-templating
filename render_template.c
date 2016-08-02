@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <assert.h>
 #ifndef RENDER_TEMPLATE
 #define RENDER_TEMPLATE
 #define OPEN_DELIMITER '{'
