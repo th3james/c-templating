@@ -17,7 +17,7 @@ FILE *getTemplateFile() {
 void testCalculateRenderedLength() {
   FILE *templateFile = getTemplateFile();
   // it returns 3X the file length
-  static const size_t templateFileSize = 16;
+  static const size_t templateFileSize = 29;
   static const size_t expectedSize = templateFileSize*3;
   size_t result = calculateRenderedLength(templateFile);
   // returns correct size
@@ -113,8 +113,8 @@ void testShouldRenderReplacement() {
 }
 
 void testRenderBasicTemplate() {
-  int argc = 2;
-  char *argv[] = {"name:", "World"};
+  int argc = 4;
+  char *argv[] = {"greeting:", "Hello", "name:", "World"};
 
   DictEntry_t entries[calculateDictEntryCount(argc)];
   Dict_t dict = readDict(argc, argv, entries);
@@ -122,8 +122,12 @@ void testRenderBasicTemplate() {
   FILE *templateFile = getTemplateFile();
   char result[calculateRenderedLength(templateFile)];
   renderTemplate(templateFile, dict, result);
+
   printf("Got result '%s'", result);
-  assert(strcmp(result, "Hello World!") == 0);
+  char * expected = "Well, Hello World!\n";
+  printf("Expected '%s'", expected);
+
+  assert(strcmp(result, expected) == 0);
   fclose(templateFile);
 }
 

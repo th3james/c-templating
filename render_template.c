@@ -86,6 +86,6 @@ void renderTemplate(FILE *templateFp, Dict_t replacements, char *result) {
     }
   }
   deleteState(&state);
-  result[++p] = '\0';
+  result[p] = '\0';
 }
 #endif
