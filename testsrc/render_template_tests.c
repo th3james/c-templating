@@ -123,9 +123,7 @@ void testRenderBasicTemplate() {
   char result[calculateRenderedLength(templateFile)];
   renderTemplate(templateFile, dict, result);
 
-  printf("Got result '%s'", result);
   char * expected = "Well, Hello World!\n";
-  printf("Expected '%s'", expected);
 
   assert(strcmp(result, expected) == 0);
   fclose(templateFile);

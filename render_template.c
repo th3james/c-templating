@@ -53,6 +53,7 @@ char renderChar(char c, ParserState_t *state) {
     int16_t strEnd = 0;
     while(state->replacementKey[strEnd] != '\0') { strEnd++; }
     state->replacementKey[strEnd] = c;
+    state->replacementKey[strEnd+1] = '\0';
     return '\0';
   } else {
     assert(-1); // shouldn't happen
